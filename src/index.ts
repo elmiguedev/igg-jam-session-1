@@ -1,7 +1,6 @@
 import * as Phaser from "phaser";
 import BootloaderScene from "./scenes/bootloader.scene";
 import MainScene from "./scenes/main.scene";
-import TestScene from "./scenes/test.scene";
 
 class Game {
 
@@ -20,9 +19,9 @@ class Game {
         this.config = {
             type: Phaser.AUTO,
 
-            width: 128,
-            height: 96,
-            zoom: 4,
+            width: 320,
+            height: 200,
+            zoom: 2,
             render: {
                 pixelArt: true,
             },
@@ -30,8 +29,6 @@ class Game {
             physics: {
                 default: "arcade",
                 arcade: {
-                    // gravity: { x: 0, y: 300 }
-
                 }
             },
         };
@@ -51,7 +48,6 @@ class Game {
 
     private addScenes(): void {
         this.game.scene.add("BootloaderScene", BootloaderScene);
-        this.game.scene.add("TestScene", TestScene);
         this.game.scene.add("MainScene", MainScene);
         // this.game.scene.add("HudScene", HudScene);
     }
