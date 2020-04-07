@@ -1,6 +1,7 @@
 import * as Phaser from "phaser";
 import Gladiator from "../entities/gladiator.entity";
 import Bullet from "../entities/bullet.entity";
+import Slime from "../entities/slime.entity";
 
 export default class MainScene extends Phaser.Scene {
 
@@ -16,6 +17,7 @@ export default class MainScene extends Phaser.Scene {
     };
     private playerCamera: any;
     private gladiator: Gladiator;
+    private enemies: Phaser.Physics.Arcade.Group;
 
 
     // constructor 
@@ -35,6 +37,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.createMap();
         this.createGladiator();
+        this.createEnemies();
         this.createKeys();
         this.createCursor();
         this.configureCamera();
@@ -66,9 +69,15 @@ export default class MainScene extends Phaser.Scene {
 
     createCollisions() {
         this.physics.add.collider(this.gladiator, this.mapLayers.walls);
+        this.physics.add.collider(this.enemies, this.mapLayers.walls);
         this.physics.add.collider(this.gladiator.bullets, this.mapLayers.walls, (b: Bullet, w) => {
             b.kill();
             b.destroy();
+        });
+        this.physics.add.collider(this.gladiator.bullets, this.enemies, (b: Bullet, e) => {
+            b.kill();
+            b.destroy();
+            e.hurt();
         });
     }
 
@@ -97,11 +106,21 @@ export default class MainScene extends Phaser.Scene {
         }, this);
     }
 
+    createEnemies() {
+        this.enemies = this.physics.add.group();
+
+        const e = new Slime(this, 300, 200);
+        this.enemies.add(e);
+        e.follow(this.gladiator);
+
+    }
+
     // update methods
     // -----------------------------
 
     update() {
         this.checkInput();
+        this.checkEnemies();
         this.gladiator.update();
     }
 
@@ -117,6 +136,12 @@ export default class MainScene extends Phaser.Scene {
     checkCamera() {
         this.playerCamera.x = Math.floor(this.gladiator.x);
         this.playerCamera.y = Math.floor(this.gladiator.y);
+    }
+
+    checkEnemies() {
+        this.enemies.getChildren().forEach(e => {
+            e.follow(this.gladiator);
+        })
     }
 
 

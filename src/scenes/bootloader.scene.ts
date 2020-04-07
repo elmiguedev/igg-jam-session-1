@@ -28,6 +28,10 @@ export default class BootloaderScene extends Phaser.Scene {
             frameWidth: 24,
             frameHeight: 32
         });
+        this.load.spritesheet("slime", "../assets/img/slime.png", {
+            frameWidth: 16,
+            frameHeight: 8
+        });
         this.load.image("bullet", "../assets/img/bullet.png");
 
         // load fonts

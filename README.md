@@ -19,6 +19,15 @@ Cada uno de ellos te habilita 2 habilidades especiales, distintas segun el item 
 Al ser un escenario como una arena, aparecerán enemigos en determinados niveles, pueden ser minotauros, colosos, animales, etc.
 El objetivo es derrotar a todos los mini mounstruos y al boss final de cada nivel
 
+Tentativa de enemigos:
+  - COVID
+  - DENGUE
+  - CHICUNGUÑA
+  - RUGBIER
+  - NEGROS
+  - CHINOS
+  - POLICIAS
+
 ## Objetivo
 Por lo pronto, el objetivo es simplemente llegar al nivel 3 (version de jam), pero se podría extender a muchos niveles
 
