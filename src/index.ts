@@ -17,7 +17,7 @@ class Game {
 
         // create game configuration
         this.config = {
-            type: Phaser.AUTO,
+            type: Phaser.CANVAS,
 
             width: 320,
             height: 200,

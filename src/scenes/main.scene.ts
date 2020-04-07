@@ -9,8 +9,8 @@ export default class MainScene extends Phaser.Scene {
     private keys: any;
     private mapLayers: {
         map: Phaser.Tilemaps.Tilemap,
-        background: Phaser.Tilemaps.StaticTilemapLayer,
-        objects: Phaser.Tilemaps.ObjectLayer,
+        ground: Phaser.Tilemaps.StaticTilemapLayer,
+        walls: Phaser.Tilemaps.StaticTilemapLayer,
     };
     private playerCamera: any;
     private gladiator: Gladiator;
@@ -42,19 +42,18 @@ export default class MainScene extends Phaser.Scene {
     }
 
     createMap() {
-        // const map = this.make.tilemap({ key: "l_1" });
-        // const tileset = map.addTilesetImage("map_tiles", "map_tiles", 8, 8, 0, 0);
-        // const background = map.createStaticLayer("background", tileset, 0, 0);
-        // // const obstacles = map.createStaticLayer("obstacles", tileset, 0, 0).setDepth(5);
-        // // const overlayer = map.createStaticLayer("overlayer", tileset, 0, 0).setDepth(10);
-        // const objects = map.getObjectLayer("objects");
 
+        const map = this.make.tilemap({ key: "map" });
+        const tileset = map.addTilesetImage("map_tiles", "map_tiles", 16, 16, 0, 0);
+        const ground = map.createStaticLayer("ground", tileset, 0, 0);
+        const walls = map.createStaticLayer("walls", tileset, 0, 0);
+        walls.setCollisionByProperty({ solid: true })
 
-        // this.mapLayers = {
-        //     map: map,
-        //     background: background,
-        //     objects: objects
-        // }
+        this.mapLayers = {
+            map: map,
+            ground: ground,
+            walls: walls,
+        }
     }
 
     createGladiator() {
@@ -62,19 +61,13 @@ export default class MainScene extends Phaser.Scene {
     }
 
     createCollisions() {
+        this.physics.add.collider(this.gladiator, this.mapLayers.walls);
     }
 
 
     configureCamera() {
-        // // this is a fix for tiles jitter
-        // this.playerCamera = new Phaser.Geom.Point(this.ant.x, this.ant.y);
-        // this.cameras.main.startFollow(this.playerCamera);
-        // this.cameras.main.setBounds(
-        //     0,
-        //     0,
-        //     this.mapLayers.map.widthInPixels,
-        //     this.mapLayers.map.heightInPixels
-        // );
+        this.cameras.main.setRoundPixels(true);
+        this.cameras.main.startFollow(this.gladiator);
     }
 
     createKeys() {
@@ -91,7 +84,6 @@ export default class MainScene extends Phaser.Scene {
     // -----------------------------
 
     update() {
-        this.checkCamera();
         this.checkInput();
         this.gladiator.update();
     }
@@ -106,8 +98,8 @@ export default class MainScene extends Phaser.Scene {
     }
 
     checkCamera() {
-        // this.playerCamera.x = Math.floor(this.ant.x);
-        // this.playerCamera.y = Math.floor(this.ant.y);
+        this.playerCamera.x = Math.floor(this.gladiator.x);
+        this.playerCamera.y = Math.floor(this.gladiator.y);
     }
 
 

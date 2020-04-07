@@ -32,6 +32,10 @@ export default class BootloaderScene extends Phaser.Scene {
         // load fonts
         this.load.image("namco_font", "../assets/fonts/namco.png");
 
+        // load map
+        this.load.image("map_tiles", "../assets/img/map_tiles.png");
+        this.load.tilemapTiledJSON("map", "../assets/map/map.json");
+
         // load everything
         this.load.on('complete', () => {
             this.scene.start('MainScene');
