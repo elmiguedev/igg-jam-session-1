@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
 import Enemy from "../core/enemy";
 
-export default class Slime extends Enemy {
+export default class Dengue extends Enemy {
 
     // props
     // -------------------
@@ -15,9 +15,9 @@ export default class Slime extends Enemy {
             scene,
             x,
             y,
-            "slime",
-            [0, 1, 2, 1],
-            5
+            "dengue",
+            [0, 1],
+            15
         );
     }
 

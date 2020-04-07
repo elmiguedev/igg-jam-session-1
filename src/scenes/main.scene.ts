@@ -2,6 +2,8 @@ import * as Phaser from "phaser";
 import Gladiator from "../entities/gladiator.entity";
 import Bullet from "../entities/bullet.entity";
 import Slime from "../entities/slime.entity";
+import Covid from "../entities/covid.entity";
+import Dengue from "../entities/dengue.entity";
 
 export default class MainScene extends Phaser.Scene {
 
@@ -107,11 +109,21 @@ export default class MainScene extends Phaser.Scene {
     }
 
     createEnemies() {
-        this.enemies = this.physics.add.group();
+        this.enemies = this.physics.add.group({
+            runChildUpdate: true
+        });
 
         const e = new Slime(this, 300, 200);
         this.enemies.add(e);
         e.follow(this.gladiator);
+
+        const c = new Covid(this, 400, 400);
+        this.enemies.add(c);
+        c.follow(this.gladiator);
+
+        const d = new Dengue(this, 500, 500);
+        this.enemies.add(d);
+        d.follow(this.gladiator);
 
     }
 
