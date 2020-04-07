@@ -1,12 +1,15 @@
 import * as Phaser from "phaser";
 import Entity from "../core/entity";
+import Bullet from "./bullet.entity";
 
 export default class Gladiator extends Entity {
 
     // props
     // -------------------
 
-    public isWalking: boolean = false;
+    public bullets: Phaser.Physics.Arcade.Group;
+    public shootDelay: number = 100;
+    public isShooting: boolean = false;
 
     // constructor
     // -------------------
@@ -31,6 +34,7 @@ export default class Gladiator extends Entity {
     init() {
         this.configureMovementSettings();
         this.configureHitbox();
+        this.configureGun();
     }
 
     update() {
@@ -50,6 +54,13 @@ export default class Gladiator extends Entity {
         this.setOffset(8, 20);
     }
 
+    configureGun() {
+        this.bullets = this.scene.physics.add.group({
+            classType: Bullet,
+            maxSize: 50
+        })
+    }
+
     walk(orientation: string) {
         switch (orientation) {
             case "left": this.setVelocityX(-300); this.setFlipX(true); break;
@@ -57,6 +68,22 @@ export default class Gladiator extends Entity {
             case "up": this.setVelocityY(-300); break;
             case "down": this.setVelocityY(300); break;
             default: break;
+        }
+    }
+
+    shoot(cursor) {
+        if (!this.isShooting) {
+            const h = 16;
+            const x = this.x + (Math.cos(cursor.angle) * h);
+            const y = this.y + (Math.sin(cursor.angle) * h);
+            const c: Bullet = this.bullets.getFirstDead(true, x, y);
+            if (c) {
+                this.scene.physics.moveTo(c, cursor.x, cursor.y, 500);
+                this.isShooting = true;
+                setTimeout(() => {
+                    this.isShooting = false;
+                }, this.shootDelay);
+            }
         }
     }
 

@@ -27,7 +27,8 @@ export default class BootloaderScene extends Phaser.Scene {
         this.load.spritesheet("gladiator", "../assets/img/gladiator.png", {
             frameWidth: 24,
             frameHeight: 32
-        })
+        });
+        this.load.image("bullet", "../assets/img/bullet.png");
 
         // load fonts
         this.load.image("namco_font", "../assets/fonts/namco.png");
