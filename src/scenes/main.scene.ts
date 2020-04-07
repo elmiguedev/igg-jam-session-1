@@ -1,4 +1,5 @@
 import * as Phaser from "phaser";
+import Gladiator from "../entities/gladiator.entity";
 
 export default class MainScene extends Phaser.Scene {
 
@@ -12,6 +13,7 @@ export default class MainScene extends Phaser.Scene {
         objects: Phaser.Tilemaps.ObjectLayer,
     };
     private playerCamera: any;
+    private gladiator: Gladiator;
 
     // constructor 
     // ----------------------
@@ -28,9 +30,8 @@ export default class MainScene extends Phaser.Scene {
 
     init() {
 
-        this.add.text(40,40,"holis");
-
         this.createMap();
+        this.createGladiator();
         this.createKeys();
         this.configureCamera();
         this.createHud();
@@ -56,6 +57,10 @@ export default class MainScene extends Phaser.Scene {
         // }
     }
 
+    createGladiator() {
+        this.gladiator = new Gladiator(this, 50, 50);
+    }
+
     createCollisions() {
     }
 
@@ -74,10 +79,10 @@ export default class MainScene extends Phaser.Scene {
 
     createKeys() {
         this.keys = {
-            up: this.input.keyboard.addKey("up"),
-            down: this.input.keyboard.addKey("down"),
-            left: this.input.keyboard.addKey("left"),
-            right: this.input.keyboard.addKey("right"),
+            up: this.input.keyboard.addKey("w"),
+            down: this.input.keyboard.addKey("s"),
+            left: this.input.keyboard.addKey("a"),
+            right: this.input.keyboard.addKey("d"),
             space: this.input.keyboard.addKey("space")
         }
     }
@@ -86,11 +91,17 @@ export default class MainScene extends Phaser.Scene {
     // -----------------------------
 
     update() {
-         this.checkCamera();
-         this.checkInput();
+        this.checkCamera();
+        this.checkInput();
+        this.gladiator.update();
     }
 
     checkInput() {
+        if (this.keys.left.isDown) this.gladiator.walk("left");
+        if (this.keys.right.isDown) this.gladiator.walk("right");
+        if (this.keys.up.isDown) this.gladiator.walk("up");
+        if (this.keys.down.isDown) this.gladiator.walk("down");
+
 
     }
 

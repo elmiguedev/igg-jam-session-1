@@ -9,9 +9,11 @@ interface EntityConfig {
     immovable?: boolean,
     anims?: Array<{
         key: string,
-        start: number,
-        end: number,
-        repeat: boolean
+        start?: number,
+        end?: number,
+        frames?: Array<number>,
+        repeat: boolean,
+        frameRate?: number
     }>
 }
 
@@ -64,16 +66,21 @@ export default class Entity extends Phaser.Physics.Arcade.Sprite {
         if (this.config.anims) {
             for (let i = 0; i < this.config.anims.length; i++) {
                 const anim = this.config.anims[i];
+
+
                 this.scene.anims.create({
                     key: anim.key,
                     repeat: (anim.repeat ? -1 : undefined),
-                    frameRate: 10,
+                    frameRate: (anim.frameRate ? anim.frameRate : 10),
                     frames: this.scene.anims.generateFrameNumbers(
                         this.config.key,
-                        {
-                            start: anim.start,
-                            end: anim.end
-                        }
+                        (
+                            anim.frames ? { frames: anim.frames } :
+                                {
+                                    start: anim.start,
+                                    end: anim.end
+                                }
+                        )
                     )
                 });
             }
