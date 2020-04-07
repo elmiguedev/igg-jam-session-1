@@ -41,6 +41,7 @@ export default class BootloaderScene extends Phaser.Scene {
             frameHeight: 32
         });
         this.load.image("bullet", "../assets/img/bullet.png");
+        this.load.image("covid-bullet", "../assets/img/covid-bullet.png");
 
         // load fonts
         this.load.image("namco_font", "../assets/fonts/namco.png");

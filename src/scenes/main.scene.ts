@@ -76,6 +76,7 @@ export default class MainScene extends Phaser.Scene {
             b.kill();
             b.destroy();
         });
+
         this.physics.add.collider(this.gladiator.bullets, this.enemies, (b: Bullet, e) => {
             b.kill();
             b.destroy();
@@ -120,11 +121,6 @@ export default class MainScene extends Phaser.Scene {
         const c = new Covid(this, 400, 400);
         this.enemies.add(c);
         c.follow(this.gladiator);
-
-        const d = new Dengue(this, 500, 500);
-        this.enemies.add(d);
-        d.follow(this.gladiator);
-
     }
 
     // update methods
