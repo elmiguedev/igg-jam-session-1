@@ -1,23 +1,32 @@
-# igg-weekly-jam-0
-Juego para la primera (primera!) edición de Indie Game Garage - Weekly Jam.
+# igg-jam-session-1
+Juego para la primera edición de Indie Game Garage - Jam Session.
 
 ## Trama principal
-La reina hormiga esta enferma y necesitamos recolectar los 4 ingredientes para que la hormiga chaman pueda hacer la pocima curativa: trebol suerte (jardin), agua mística (desierto), plumerillo (laguna), pepita dorada (galería)
+1 item - 2 acciones,
 
-Para eso, nuestra hormiga deberá ir por distintas zonas del reino para conseguir los 4 ingredientes, debiendo pasar por los 4 distritos:
-  - Jardín
-  - Arena
-  - Laguna
-  - Galería  
+el juego consiste en una batalla en una arena, en donde solo tenes un golpe normal para atacar.
+Pero, en las esquinas del escenario hay 3 items especiales: 
+  - El casco de Thor
+  - La espada de Belenus
+  - El escudo de Boreas
   
-En el camino, deberá esquivar muchos obstáculos y enfrentarse a distintos bichos enemigos, pero ninguno es más peligroso como los 4 guardianes de distritos. Ellos son los que custodian los ingredientes principales.
- 
-Podrá nuestra hormiga recuperar los ingredientes y así salvar a la reina?
+Cada uno de ellos te habilita 2 habilidades especiales, distintas segun el item agarrado.
+- El casco te da la posibilidad de teletransportarte, y de tirar rayos
+- La espada puede golpear y dejar un rastro de fuego, y tirar lanzallamas
+- El escudo crea un campo protector, y pega congelando a la gente
 
-## Mecánica de la hormiga
+## Enemigos
+Al ser un escenario como una arena, aparecerán enemigos en determinados niveles, pueden ser minotauros, colosos, animales, etc.
+El objetivo es derrotar a todos los mini mounstruos y al boss final de cada nivel
 
-El juego es un scroller top-down al estilo zelda, pero para mover a la hormiga, se avanza con una tecla y se "cambia el ángulo de giro" con las teclas de los costados, similar a cómo funciona el sistema de movimiento de GTA2.
+## Objetivo
+Por lo pronto, el objetivo es simplemente llegar al nivel 3 (version de jam), pero se podría extender a muchos niveles
 
-Al ser una hormiga, la única forma que tiene de defenderse es el ácido fórmico, pero cuidado, no es infinito, para poder utilizarlo la hormiga debe recuperar su capacidad de ácido.
+## Colaborativo
+Posibilidad de que pueda conectarse otro jugador y que sea pvp o colaborativo para pasar los niveles
+
+## Inspiracion
+- El luchita
+- Coliseo romano / gladiador
 
 
