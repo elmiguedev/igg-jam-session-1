@@ -46,10 +46,11 @@ export default class Gladiator extends Entity {
 
     configureMovementSettings() {
         this.setDrag(1000, 1000)
-        this.setMaxVelocity(100, 100);
+        this.setMaxVelocity(300, 300);
     }
 
     configureHitbox() {
+        this.setDepth(10)
         this.setSize(8, 12);
         this.setOffset(8, 20);
     }
@@ -63,10 +64,10 @@ export default class Gladiator extends Entity {
 
     walk(orientation: string) {
         switch (orientation) {
-            case "left": this.setVelocityX(-300); this.setFlipX(true); break;
-            case "right": this.setVelocityX(300); this.setFlipX(false); break;
-            case "up": this.setVelocityY(-300); break;
-            case "down": this.setVelocityY(300); break;
+            case "left": this.setVelocityX(-150); this.setFlipX(true); break;
+            case "right": this.setVelocityX(150); this.setFlipX(false); break;
+            case "up": this.setVelocityY(-150); break;
+            case "down": this.setVelocityY(150); break;
             default: break;
         }
     }

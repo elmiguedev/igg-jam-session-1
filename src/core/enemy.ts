@@ -8,11 +8,12 @@ export default class Enemy extends Entity {
     private animKey: string;
     protected target: Phaser.Physics.Arcade.Sprite;
     protected life: number = 20;
+    protected speed: number;
 
     // constructor
     // -------------------
 
-    constructor(scene: Phaser.Scene, x: number, y: number, key: string, frames: Array<number>, frameRate?: number) {
+    constructor(scene: Phaser.Scene, x: number, y: number, key: string, frames: Array<number>, frameRate?: number, speed?: number) {
         super({
             scene: scene,
             x: x,
@@ -23,6 +24,7 @@ export default class Enemy extends Entity {
             ]
         });
         this.animKey = key + "_idle";
+        this.speed = (speed ? speed : 20);
         this.init();
     }
 
@@ -42,7 +44,7 @@ export default class Enemy extends Entity {
 
     follow(o) {
         this.target = o;
-        this.scene.physics.moveTo(this, this.target.x, this.target.y, 20);
+        this.scene.physics.moveTo(this, this.target.x, this.target.y, this.speed);
     }
 
     hurt() {

@@ -17,7 +17,8 @@ export default class Slime extends Enemy {
             y,
             "slime",
             [0, 1, 2, 1],
-            5
+            5,
+            Phaser.Math.Between(10, 30)
         );
     }
 

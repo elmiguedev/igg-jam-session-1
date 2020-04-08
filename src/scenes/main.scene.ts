@@ -4,6 +4,7 @@ import Bullet from "../entities/bullet.entity";
 import Slime from "../entities/slime.entity";
 import Covid from "../entities/covid.entity";
 import Dengue from "../entities/dengue.entity";
+import Enemy from "../core/enemy";
 
 export default class MainScene extends Phaser.Scene {
 
@@ -16,6 +17,7 @@ export default class MainScene extends Phaser.Scene {
         map: Phaser.Tilemaps.Tilemap,
         ground: Phaser.Tilemaps.StaticTilemapLayer,
         walls: Phaser.Tilemaps.StaticTilemapLayer,
+        entities: Phaser.Tilemaps.ObjectLayer
     };
     private playerCamera: any;
     private gladiator: Gladiator;
@@ -57,11 +59,13 @@ export default class MainScene extends Phaser.Scene {
         const ground = map.createStaticLayer("ground", tileset, 0, 0);
         const walls = map.createStaticLayer("walls", tileset, 0, 0);
         walls.setCollisionByProperty({ solid: true })
+        const entities = map.getObjectLayer("entities");
 
         this.mapLayers = {
             map: map,
             ground: ground,
             walls: walls,
+            entities: entities
         }
     }
 
@@ -71,6 +75,12 @@ export default class MainScene extends Phaser.Scene {
 
     createCollisions() {
         this.physics.add.collider(this.gladiator, this.mapLayers.walls);
+        this.physics.add.collider(this.enemies, this.enemies);
+        this.physics.add.collider(this.enemies, this.gladiator, (e: Enemy, g: Gladiator) => {
+            const angle = Phaser.Math.Angle.Between(e.x, e.y, g.x, g.y);
+            console.log(angle);
+            this.physics.velocityFromRotation(angle, -300, this.gladiator.body.velocity);
+        });
         this.physics.add.collider(this.enemies, this.mapLayers.walls);
         this.physics.add.collider(this.gladiator.bullets, this.mapLayers.walls, (b: Bullet, w) => {
             b.kill();
@@ -114,13 +124,24 @@ export default class MainScene extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        const e = new Slime(this, 300, 200);
-        this.enemies.add(e);
-        e.follow(this.gladiator);
+        for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
+            const entity = this.mapLayers.entities.objects[i];
+            switch (entity.type) {
+                case "slime":
+                    const slime = new Slime(this, entity.x, entity.y);
+                    this.enemies.add(slime);
+                    slime.follow(this.gladiator);
+                    break;
+                case "covid":
+                    const covid = new Covid(this, entity.x, entity.y);
+                    this.enemies.add(covid);
+                    covid.follow(this.gladiator);
+                    break;
 
-        const c = new Covid(this, 400, 400);
-        this.enemies.add(c);
-        c.follow(this.gladiator);
+                default:
+                    break;
+            }
+        }
     }
 
     // update methods

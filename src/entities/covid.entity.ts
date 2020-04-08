@@ -49,6 +49,10 @@ export default class Covid extends Enemy {
             b.kill();
             b.destroy();
         });
+        this.scene.physics.add.collider(this.bullets, this.target, (b: CovidBullet, g) => {
+            b.kill();
+            b.destroy();
+        });
     }
 
     shoot() {
