@@ -47,3 +47,7 @@ Posibilidad de que pueda conectarse otro jugador y que sea pvp o colaborativo pa
 - https://github.com/samme/phaser-sprite-gui
 - https://github.com/samme/phaser-plugin-debug-arcade-physics
 
+Sonidos
+
+- https://femurdesign.com/omni/
+- https://synth.playtronica.com/ (aca estan todos)
