@@ -39,3 +39,11 @@ Posibilidad de que pueda conectarse otro jugador y que sea pvp o colaborativo pa
 - Coliseo romano / gladiador
 
 
+## Herramientas usadas y descubiertas en esta gjam
+- Tiled
+- Aseprite
+- LMMS
+- https://github.com/sporadic-labs/tile-extruder
+- https://github.com/samme/phaser-sprite-gui
+- https://github.com/samme/phaser-plugin-debug-arcade-physics
+

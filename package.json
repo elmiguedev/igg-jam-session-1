@@ -4,7 +4,8 @@
   "description": "Juego para la primera (primera!) edición de Indie Game Garage - Weekly Jam.",
   "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.ts"
+    "start": "parcel src/index.ts",
+    "build": "parcel build src/index.ts"
   },
   "staticPath": {
     "source": [

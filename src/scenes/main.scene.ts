@@ -5,6 +5,8 @@ import Slime from "../entities/slime.entity";
 import Covid from "../entities/covid.entity";
 import Dengue from "../entities/dengue.entity";
 import Enemy from "../core/enemy";
+import Orb from "../entities/orb.enemy";
+import Cube from "../entities/cube.enemy";
 
 export default class MainScene extends Phaser.Scene {
 
@@ -78,8 +80,14 @@ export default class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.enemies, this.gladiator, (e: Enemy, g: Gladiator) => {
             const angle = Phaser.Math.Angle.Between(e.x, e.y, g.x, g.y);
-            console.log(angle);
             this.physics.velocityFromRotation(angle, -300, this.gladiator.body.velocity);
+                
+            // this.cameras.main.shake(100);
+            this.cameras.main.flash(100);
+
+
+
+
         });
         this.physics.add.collider(this.enemies, this.mapLayers.walls);
         this.physics.add.collider(this.gladiator.bullets, this.mapLayers.walls, (b: Bullet, w) => {
@@ -128,12 +136,12 @@ export default class MainScene extends Phaser.Scene {
             const entity = this.mapLayers.entities.objects[i];
             switch (entity.type) {
                 case "slime":
-                    const slime = new Slime(this, entity.x, entity.y);
+                    const slime = new Cube(this, entity.x, entity.y);
                     this.enemies.add(slime);
                     slime.follow(this.gladiator);
                     break;
                 case "covid":
-                    const covid = new Covid(this, entity.x, entity.y);
+                    const covid = new Orb(this, entity.x, entity.y);
                     this.enemies.add(covid);
                     covid.follow(this.gladiator);
                     break;
