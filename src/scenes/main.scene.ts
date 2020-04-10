@@ -18,7 +18,8 @@ export default class MainScene extends Phaser.Scene {
     private mapLayers: {
         map: Phaser.Tilemaps.Tilemap,
         ground: Phaser.Tilemaps.StaticTilemapLayer,
-        walls: Phaser.Tilemaps.StaticTilemapLayer,
+        solid: Phaser.Tilemaps.StaticTilemapLayer,
+        overlay: Phaser.Tilemaps.StaticTilemapLayer,
         entities: Phaser.Tilemaps.ObjectLayer
     };
     private playerCamera: any;
@@ -56,41 +57,44 @@ export default class MainScene extends Phaser.Scene {
 
     createMap() {
 
-        const map = this.make.tilemap({ key: "map" });
+        const map = this.make.tilemap({ key: "map_1" });
         const tileset = map.addTilesetImage("map_tiles", "map_tiles", 16, 16, 0, 0);
-        const ground = map.createStaticLayer("ground", tileset, 0, 0);
-        const walls = map.createStaticLayer("walls", tileset, 0, 0);
-        walls.setCollisionByProperty({ solid: true })
+        const ground = map.createStaticLayer("ground", tileset, 0, 0).setDepth(-1);
+        const solid = map.createStaticLayer("solid", tileset, 0, 0).setDepth(5);
+        const overlay = map.createStaticLayer("overlay", tileset, 0, 0).setDepth(10);
         const entities = map.getObjectLayer("entities");
+
+        solid.setCollisionByProperty({ solid: true })
 
         this.mapLayers = {
             map: map,
             ground: ground,
-            walls: walls,
+            solid: solid,
+            overlay: overlay,
             entities: entities
         }
     }
 
     createGladiator() {
-        this.gladiator = new Gladiator(this, 50, 50);
+        this.gladiator = new Gladiator(this, 150, 150);
     }
 
     createCollisions() {
-        this.physics.add.collider(this.gladiator, this.mapLayers.walls);
+        this.physics.add.collider(this.gladiator, this.mapLayers.solid);
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.enemies, this.gladiator, (e: Enemy, g: Gladiator) => {
             const angle = Phaser.Math.Angle.Between(e.x, e.y, g.x, g.y);
             this.physics.velocityFromRotation(angle, -300, this.gladiator.body.velocity);
-                
-            // this.cameras.main.shake(100);
-            this.cameras.main.flash(100);
+
+            this.cameras.main.shake(100);
+            //this.cameras.main.flash(100);
 
 
 
 
         });
-        this.physics.add.collider(this.enemies, this.mapLayers.walls);
-        this.physics.add.collider(this.gladiator.bullets, this.mapLayers.walls, (b: Bullet, w) => {
+        this.physics.add.collider(this.enemies, this.mapLayers.solid);
+        this.physics.add.collider(this.gladiator.bullets, this.mapLayers.solid, (b: Bullet, w) => {
             b.kill();
             b.destroy();
         });
@@ -134,6 +138,7 @@ export default class MainScene extends Phaser.Scene {
 
         for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
             const entity = this.mapLayers.entities.objects[i];
+            console.log(entity);
             switch (entity.type) {
                 case "slime":
                     const slime = new Cube(this, entity.x, entity.y);
