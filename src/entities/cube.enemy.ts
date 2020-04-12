@@ -5,7 +5,12 @@ export default class Cube extends Enemy {
 
     // props
     // -------------------
-
+    private boostSpeed:number;
+    private targetSpeedOriginal:number;
+    private tackleTimer: any;
+    private tackleRate: number = 3000;
+    private canTackle:boolean = true;
+    private isTackling:boolean = false;
 
     // constructor
     // -------------------
@@ -20,9 +25,40 @@ export default class Cube extends Enemy {
             15,
             Phaser.Math.Between(10, 30)
         );
+
+        // reset target speed
+        this.targetSpeed = this.randomSpeed * 5;
+        this.targetSpeedOriginal = this.targetSpeed;
+        this.boostSpeed = this.targetSpeedOriginal * 8;
+
     }
 
     // methods
     // ------------------
+
+    update() {
+        super.update();
+
+        // check tackle
+        if (this.getTargetDistance() < this.visionRange) {
+            if (this.canTackle == true && Phaser.Math.Between(1,3) >= 3) {
+                this.canTackle = false;
+                this.isTackling = true;
+                setTimeout(() => {
+                    this.isTackling = false;
+                }, 300);
+                setTimeout(() => {
+                    this.canTackle = true;
+                }, this.tackleRate);
+            } 
+        } 
+    }
+
+    // target movement override
+    targetMovement() {
+        const speed = (this.isTackling ? this.boostSpeed : this.targetSpeed);
+        if (this.active == true)
+            this.scene.physics.moveTo(this, this.target.x, this.target.y, speed);
+    }
 
 }

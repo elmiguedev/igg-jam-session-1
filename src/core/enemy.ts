@@ -10,7 +10,7 @@ export default class Enemy extends Entity {
     protected life: number = 20;
     protected targetSpeed: number;
     protected randomSpeed: number;
-    protected visionRange:number = 60;
+    protected visionRange: number = 60;
 
     // constructor
     // -------------------
@@ -27,7 +27,7 @@ export default class Enemy extends Entity {
         });
         this.animKey = key + "_idle";
         this.targetSpeed = (speed ? speed : 20);
-        this.randomSpeed = (speed ? speed/3 : 7);
+        this.randomSpeed = (speed ? speed / 3 : 7);
         this.init();
     }
 
@@ -50,7 +50,7 @@ export default class Enemy extends Entity {
     initRandomMovement() {
         setInterval(() => {
             this.randomMovement();
-        },1000);        
+        }, 1000);
     }
 
     follow(o) {
@@ -75,8 +75,8 @@ export default class Enemy extends Entity {
     }
 
     randomMovement() {
-        const newX = this.x + Phaser.Math.Between(-50,50);
-        const newY = this.y + Phaser.Math.Between(-50,50);
+        const newX = this.x + Phaser.Math.Between(-50, 50);
+        const newY = this.y + Phaser.Math.Between(-50, 50);
 
         if (this.active == true)
             this.scene.physics.moveTo(this, newX, newY, this.randomSpeed);
@@ -88,9 +88,9 @@ export default class Enemy extends Entity {
     }
 
     checkMovement() {
-            if (this.getTargetDistance() <= this.visionRange) {
-                this.targetMovement();
-            }
+        if (this.getTargetDistance() <= this.visionRange) {
+            this.targetMovement();
+        }
     }
 
 

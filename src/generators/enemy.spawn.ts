@@ -2,6 +2,7 @@ import * as Phaser from "phaser";
 import Slime from "../entities/slime.entity";
 import Entity from "../core/entity";
 import Enemy from "../core/enemy";
+import Cube from "../entities/cube.enemy";
 
 export default class EnemySpawn {
 
@@ -11,8 +12,9 @@ export default class EnemySpawn {
     private target: Entity;
     private size: number = 5;
     private spawnRate: number = 1000;
+    private spawnArea: number = 10;
     private entities: Array<Enemy> = [];
-    private timer:any;
+    private timer: any;
 
     public x: number;
     public y: number;
@@ -35,7 +37,7 @@ export default class EnemySpawn {
 
         this.timer = setInterval(() => {
             this.spawn();
-        },this.spawnRate);
+        }, this.spawnRate);
     }
 
     spawn() {
@@ -44,16 +46,17 @@ export default class EnemySpawn {
         this.removeEntities();
 
         // check if entities are full
-        if (this.entities.length > this.size) {
+        if (this.entities.length >= this.size) {
             return;
         }
-
-        console.log("spawn!",this.entities.length);
 
         // create entity
         switch (this.type) {
             case "slime":
                 this.createSlime();
+                break;
+            case "cube":
+                this.createCube();
                 break;
 
             default:
@@ -62,17 +65,27 @@ export default class EnemySpawn {
     }
 
     createSlime() {
-            const slime = new Slime(this.scene, this.x, this.y);
-            this.group.add(slime);
-            this.entities.push(slime);
-            slime.follow(this.target);
+        const spawnx = this.x + Phaser.Math.Between(-this.spawnArea, this.spawnArea);
+        const spawny = this.y + Phaser.Math.Between(-this.spawnArea, this.spawnArea);
+        const slime = new Slime(this.scene, spawnx, spawny);
+        this.group.add(slime);
+        this.entities.push(slime);
+        slime.follow(this.target);
+    }
+    createCube() {
+        const spawnx = this.x + Phaser.Math.Between(-this.spawnArea, this.spawnArea);
+        const spawny = this.y + Phaser.Math.Between(-this.spawnArea, this.spawnArea);
+        const cube = new Cube(this.scene, spawnx, spawny);
+        this.group.add(cube);
+        this.entities.push(cube);
+        cube.follow(this.target);
     }
 
     removeEntities() {
         for (let i = 0; i < this.entities.length; i++) {
             const e = this.entities[i];
-            if (e.active === false && e.visible === false ) {
-                this.entities.splice(i,1);
+            if (e.active === false && e.visible === false) {
+                this.entities.splice(i, 1);
                 this.group.remove(e);
             }
 
@@ -82,14 +95,26 @@ export default class EnemySpawn {
     // public methods
     // --------------------
 
-    public setSize(size:number) {
+    public setSize(size: number) {
         this.size = size;
         return this;
     }
 
-    public setSpawnRate(rate:number) {
+    public setSpawnRate(rate: number) {
         this.spawnRate = rate;
         this.initSpawner();
+        return this;
+    }
+    
+    public setSpawnArea(area: number) {
+        this.spawnArea = area;
+        return this;
+    }
+
+    public quickSpawn() {
+        for (let i = 0; i < this.size; i++) {
+            this.spawn();
+        }
         return this;
     }
 

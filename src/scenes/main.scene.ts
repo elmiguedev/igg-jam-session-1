@@ -152,17 +152,24 @@ export default class MainScene extends Phaser.Scene {
             immovable: true
         });
 
-        // create slime spawner
-        
-
+        // create spawners
         for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
             const entity = this.mapLayers.entities.objects[i];
             switch (entity.type) {
                 case "slime":
-                    const s = new EnemySpawn(entity.x,entity.y,this.enemies,"slime",this.gladiator)
-                        .setSize(6)
-                        .setSpawnRate(2000);
-                
+                    // const s = new EnemySpawn(entity.x, entity.y, this.enemies, "slime", this.gladiator)
+                    //     .setSize(6)
+                    //     .setSpawnArea(50)
+                    //     .setSpawnRate(2000)
+                    //     .quickSpawn();
+                    break;
+                case "cube":
+                    const c = new EnemySpawn(entity.x, entity.y, this.enemies, "cube", this.gladiator)
+                        .setSize(1)
+                        .setSpawnArea(10)
+                        .setSpawnRate(2000)
+                        .quickSpawn();
+
                     break;
 
                 default:
