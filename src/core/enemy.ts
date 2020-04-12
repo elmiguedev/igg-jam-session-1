@@ -8,7 +8,9 @@ export default class Enemy extends Entity {
     private animKey: string;
     protected target: Phaser.Physics.Arcade.Sprite;
     protected life: number = 20;
-    protected speed: number;
+    protected targetSpeed: number;
+    protected randomSpeed: number;
+    protected visionRange:number = 60;
 
     // constructor
     // -------------------
@@ -24,7 +26,8 @@ export default class Enemy extends Entity {
             ]
         });
         this.animKey = key + "_idle";
-        this.speed = (speed ? speed : 20);
+        this.targetSpeed = (speed ? speed : 20);
+        this.randomSpeed = (speed ? speed/3 : 7);
         this.init();
     }
 
@@ -33,6 +36,7 @@ export default class Enemy extends Entity {
 
     update() {
         this.checkFlip();
+        this.checkMovement();
     }
 
     // methods
@@ -40,11 +44,17 @@ export default class Enemy extends Entity {
 
     init() {
         this.anims.play(this.animKey, true);
+        this.initRandomMovement();
+    }
+
+    initRandomMovement() {
+        setInterval(() => {
+            this.randomMovement();
+        },1000);        
     }
 
     follow(o) {
         this.target = o;
-        this.scene.physics.moveTo(this, this.target.x, this.target.y, this.speed);
     }
 
     hurt() {
@@ -63,6 +73,27 @@ export default class Enemy extends Entity {
         const d = Math.sqrt(a * a + b * b);
         return d;
     }
+
+    randomMovement() {
+        const newX = this.x + Phaser.Math.Between(-50,50);
+        const newY = this.y + Phaser.Math.Between(-50,50);
+
+        if (this.active == true)
+            this.scene.physics.moveTo(this, newX, newY, this.randomSpeed);
+    }
+
+    targetMovement() {
+        if (this.active == true)
+            this.scene.physics.moveTo(this, this.target.x, this.target.y, this.targetSpeed);
+    }
+
+    checkMovement() {
+            if (this.getTargetDistance() <= this.visionRange) {
+                this.targetMovement();
+            }
+    }
+
+
 
     checkFlip() {
         if (this.body.velocity.x > 0) {

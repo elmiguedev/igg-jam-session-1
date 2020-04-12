@@ -148,31 +148,27 @@ export default class MainScene extends Phaser.Scene {
 
         // create enemies group
         this.enemies = this.physics.add.group({
-            runChildUpdate: true
+            runChildUpdate: true,
+            immovable: true
         });
 
         // create slime spawner
-        const sp = new EnemySpawn(300,200,this.enemies,"slime",this.gladiator);
-        sp.setSize(10).setSpawnRate(2000);
+        
 
-        // for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
-        //     const entity = this.mapLayers.entities.objects[i];
-        //     switch (entity.type) {
-        //         case "slime":
-        //             const slime = new Cube(this, entity.x, entity.y);
-        //             this.enemies.add(slime);
-        //             slime.follow(this.gladiator);
-        //             break;
-        //         case "covid":
-        //             const covid = new Orb(this, entity.x, entity.y);
-        //             this.enemies.add(covid);
-        //             covid.follow(this.gladiator);
-        //             break;
+        for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
+            const entity = this.mapLayers.entities.objects[i];
+            switch (entity.type) {
+                case "slime":
+                    const s = new EnemySpawn(entity.x,entity.y,this.enemies,"slime",this.gladiator)
+                        .setSize(6)
+                        .setSpawnRate(2000);
+                
+                    break;
 
-        //         default:
-        //             break;
-        //     }
-        // }
+                default:
+                    break;
+            }
+        }
     }
 
     // update methods
