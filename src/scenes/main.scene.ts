@@ -7,6 +7,7 @@ import Dengue from "../entities/dengue.entity";
 import Enemy from "../core/enemy";
 import Orb from "../entities/orb.enemy";
 import Cube from "../entities/cube.enemy";
+import EnemySpawn from "../generators/enemy.spawn";
 
 export default class MainScene extends Phaser.Scene {
 
@@ -19,7 +20,8 @@ export default class MainScene extends Phaser.Scene {
         map: Phaser.Tilemaps.Tilemap,
         ground: Phaser.Tilemaps.StaticTilemapLayer,
         solid: Phaser.Tilemaps.StaticTilemapLayer,
-        overlay: Phaser.Tilemaps.StaticTilemapLayer,
+        fg: Phaser.Tilemaps.StaticTilemapLayer,
+        bg: Phaser.Tilemaps.StaticTilemapLayer,
         entities: Phaser.Tilemaps.ObjectLayer
     };
     private playerCamera: any;
@@ -60,8 +62,9 @@ export default class MainScene extends Phaser.Scene {
         const map = this.make.tilemap({ key: "map_1" });
         const tileset = map.addTilesetImage("map_tiles", "map_tiles", 16, 16, 0, 0);
         const ground = map.createStaticLayer("ground", tileset, 0, 0).setDepth(-1);
-        const solid = map.createStaticLayer("solid", tileset, 0, 0).setDepth(5);
-        const overlay = map.createStaticLayer("overlay", tileset, 0, 0).setDepth(10);
+        const solid = map.createStaticLayer("solid", tileset, 0, 0).setVisible(false);
+        const bg = map.createStaticLayer("bg", tileset, 0, 0).setDepth(5);
+        const fg = map.createStaticLayer("fg", tileset, 0, 0).setDepth(10);
         const entities = map.getObjectLayer("entities");
 
         solid.setCollisionByProperty({ solid: true })
@@ -70,13 +73,23 @@ export default class MainScene extends Phaser.Scene {
             map: map,
             ground: ground,
             solid: solid,
-            overlay: overlay,
+            fg: fg,
+            bg: bg,
             entities: entities
         }
     }
 
     createGladiator() {
-        this.gladiator = new Gladiator(this, 150, 150);
+        const playerMap = this.mapLayers.entities.objects.filter(o => o.type == "player")[0];
+        console.log(playerMap);
+
+        let x = 200;
+        let y = 100;
+        if (playerMap) {
+            x = playerMap.x;
+            y = playerMap.y;
+        }
+        this.gladiator = new Gladiator(this, x, y);
     }
 
     createCollisions() {
@@ -132,29 +145,34 @@ export default class MainScene extends Phaser.Scene {
     }
 
     createEnemies() {
+
+        // create enemies group
         this.enemies = this.physics.add.group({
             runChildUpdate: true
         });
 
-        for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
-            const entity = this.mapLayers.entities.objects[i];
-            console.log(entity);
-            switch (entity.type) {
-                case "slime":
-                    const slime = new Cube(this, entity.x, entity.y);
-                    this.enemies.add(slime);
-                    slime.follow(this.gladiator);
-                    break;
-                case "covid":
-                    const covid = new Orb(this, entity.x, entity.y);
-                    this.enemies.add(covid);
-                    covid.follow(this.gladiator);
-                    break;
+        // create slime spawner
+        const sp = new EnemySpawn(300,200,this.enemies,"slime",this.gladiator);
+        sp.setSize(10).setSpawnRate(2000);
 
-                default:
-                    break;
-            }
-        }
+        // for (let i = 0; i < this.mapLayers.entities.objects.length; i++) {
+        //     const entity = this.mapLayers.entities.objects[i];
+        //     switch (entity.type) {
+        //         case "slime":
+        //             const slime = new Cube(this, entity.x, entity.y);
+        //             this.enemies.add(slime);
+        //             slime.follow(this.gladiator);
+        //             break;
+        //         case "covid":
+        //             const covid = new Orb(this, entity.x, entity.y);
+        //             this.enemies.add(covid);
+        //             covid.follow(this.gladiator);
+        //             break;
+
+        //         default:
+        //             break;
+        //     }
+        // }
     }
 
     // update methods

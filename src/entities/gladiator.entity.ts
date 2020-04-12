@@ -51,8 +51,8 @@ export default class Gladiator extends Entity {
 
     configureHitbox() {
         this.setDepth(8)
-        this.setSize(8, 12);
-        this.setOffset(8, 20);
+        this.setSize(12, 12);
+        this.setOffset(6, 20);
     }
 
     configureGun() {
