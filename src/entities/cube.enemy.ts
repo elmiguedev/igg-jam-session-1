@@ -41,7 +41,7 @@ export default class Cube extends Enemy {
 
         // check tackle
         if (this.getTargetDistance() < this.visionRange) {
-            if (this.canTackle == true && Phaser.Math.Between(1,500) == 1) {
+            if (this.canTackle == true && Phaser.Math.Between(1,300) == 1) {
                 this.canTackle = false;
                 this.isTackling = true;
                 setTimeout(() => {
