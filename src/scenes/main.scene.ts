@@ -41,15 +41,37 @@ export default class MainScene extends Phaser.Scene {
     // ----------------------
 
     init() {
-
+        this.cameras.main.fadeIn(1000);
         this.createMap();
         this.createGladiator();
-        this.createEnemies();
         this.createKeys();
-        this.createCursor();
         this.configureCamera();
-        this.createHud();
+        this.createCursor();
+        this.createEnemies();
+        // this.createHud();
         this.createCollisions();
+
+        this.showHelpText()
+    }
+
+    showHelpText() {
+        let text = [
+            "WASD Para moverse",
+            "Click para atacar"
+        ];
+        const t = this.add.text(this.gladiator.x, this.gladiator.y - 65, text).setOrigin(0.5);
+
+        setTimeout(() => {
+            text = [
+                "Invoca al monstruo",
+                "y toma el portal para sobrevivir"
+            ];
+            t.setText(text).setAlign("center").setOrigin(0.5);
+        }, 5000);
+
+        setTimeout(() => {
+            t.destroy();
+        }, 10000);
     }
 
     createHud() {
@@ -99,11 +121,11 @@ export default class MainScene extends Phaser.Scene {
             x = playerMap.x;
             y = playerMap.y;
         }
-        this.gladiator.setPosition(x,y);
+        this.gladiator.setPosition(x, y);
     }
 
     createCollisions() {
-        this.physics.add.collider(this.bullets, this.gladiator, (b: Entity, g:Gladiator) => {
+        this.physics.add.collider(this.bullets, this.gladiator, (b: Entity, g: Gladiator) => {
             const angle = Phaser.Math.Angle.Between(b.x, b.y, g.x, g.y);
             this.physics.velocityFromRotation(angle, -50, this.gladiator.body.velocity);
             this.cameras.main.shake(10);
@@ -129,7 +151,7 @@ export default class MainScene extends Phaser.Scene {
             b.destroy();
             this.bullets.remove(b);
         });
-        
+
 
         this.physics.add.collider(this.gladiator.bullets, this.enemies, (b: Bullet, e) => {
             b.kill();
@@ -242,10 +264,9 @@ export default class MainScene extends Phaser.Scene {
     }
 
     checkOutside() {
-        if (this.gladiator.y < 0 
-            || this.gladiator.x < 0  
-           )
-        {
+        if (this.gladiator.y < 0
+            || this.gladiator.x < 0
+        ) {
             this.setGladiatorStartPosition();
         }
     }

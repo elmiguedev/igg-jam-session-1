@@ -16,12 +16,12 @@ export default class EnemySpawn {
     private spawnArea: number = 10;
     private entities: Array<Enemy> = [];
     private timer: any;
-    private sceneBullets:Phaser.Physics.Arcade.Group;
+    private sceneBullets: Phaser.Physics.Arcade.Group;
 
     public x: number;
     public y: number;
 
-    constructor(x: number, y: number, enemyGroup: Phaser.Physics.Arcade.Group, type: string, target: Entity, sceneBullets?:Phaser.Physics.Arcade.Group) {
+    constructor(x: number, y: number, enemyGroup: Phaser.Physics.Arcade.Group, type: string, target: Entity, sceneBullets?: Phaser.Physics.Arcade.Group) {
         this.scene = enemyGroup.scene;
         this.group = enemyGroup;
         this.type = type;
@@ -51,24 +51,23 @@ export default class EnemySpawn {
         this.removeEntities();
 
         // check if entities are full
-        if (this.entities.length >= this.size) {
-            return;
-        }
+        if (!(this.entities.length >= this.size)) {
 
-        // create entity
-        switch (this.type) {
-            case "slime":
-                this.createSlime();
-                break;
-            case "cube":
-                this.createCube();
-                break;
-            case "orb":
-                this.createOrb();
-                break;
+            // create entity
+            switch (this.type) {
+                case "slime":
+                    this.createSlime();
+                    break;
+                case "cube":
+                    this.createCube();
+                    break;
+                case "orb":
+                    this.createOrb();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -91,7 +90,7 @@ export default class EnemySpawn {
     createOrb() {
         const spawnx = this.x + Phaser.Math.Between(-this.spawnArea, this.spawnArea);
         const spawny = this.y + Phaser.Math.Between(-this.spawnArea, this.spawnArea);
-        const orb = new Orb(this.scene, spawnx, spawny,this.sceneBullets);
+        const orb = new Orb(this.scene, spawnx, spawny, this.sceneBullets);
         this.group.add(orb);
         this.entities.push(orb);
         orb.follow(this.target);
@@ -121,7 +120,7 @@ export default class EnemySpawn {
         this.initSpawner();
         return this;
     }
-    
+
     public setSpawnArea(area: number) {
         this.spawnArea = area;
         return this;

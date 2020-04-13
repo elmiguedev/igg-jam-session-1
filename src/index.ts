@@ -1,6 +1,7 @@
 import * as Phaser from "phaser";
 import BootloaderScene from "./scenes/bootloader.scene";
 import MainScene from "./scenes/main.scene";
+import StartScene from "./scenes/start.scene";
 
 class Game {
 
@@ -49,6 +50,7 @@ class Game {
     private addScenes(): void {
         this.game.scene.add("BootloaderScene", BootloaderScene);
         this.game.scene.add("MainScene", MainScene);
+        this.game.scene.add("StartScene", StartScene);
         // this.game.scene.add("HudScene", HudScene);
     }
 

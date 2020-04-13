@@ -32,6 +32,7 @@ export default class Gladiator extends Entity {
     // -------------------
 
     init() {
+        this.anims.play("gladiator_idle")
         this.configureMovementSettings();
         this.configureHitbox();
         this.configureGun();
