@@ -163,6 +163,7 @@ export default class MainScene extends Phaser.Scene {
             const angle = Phaser.Math.Angle.Between(e.x, e.y, g.x, g.y);
             this.physics.velocityFromRotation(angle, -300, this.gladiator.body.velocity);
             this.cameras.main.shake(10);
+            this.light.setScale(this.light.scale -= 0.02);
             // this.cameras.main.flash(20);
         });
         this.physics.add.collider(this.enemies, this.mapLayers.solid);
