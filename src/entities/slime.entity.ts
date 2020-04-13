@@ -21,6 +21,7 @@ export default class Slime extends Enemy {
             Phaser.Math.Between(10, 30)
         );
         this.setDepth(7);
+        this.life = 3;
     }
 
     // methods
