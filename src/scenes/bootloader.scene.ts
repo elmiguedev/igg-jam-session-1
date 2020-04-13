@@ -52,6 +52,7 @@ export default class BootloaderScene extends Phaser.Scene {
         this.load.image("bullet", "../assets/img/bullet.png");
         this.load.image("covid-bullet", "../assets/img/covid-bullet.png");
         this.load.image("orb-bullet", "../assets/img/orb-bullet.png");
+        this.load.image("light", "../assets/img/light_mask.png");
 
         // load fonts
         this.load.image("namco_font", "../assets/fonts/namco.png");

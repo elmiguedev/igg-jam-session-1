@@ -9,7 +9,7 @@ export default class MainScene extends Phaser.Scene {
 
     // properties 
     // ----------------------
-
+    private light:any;
     private keys: any;
     private cursor: any = { x: 0, y: 0 };
     private mapLayers: {
@@ -50,8 +50,32 @@ export default class MainScene extends Phaser.Scene {
         this.createEnemies();
         // this.createHud();
         this.createCollisions();
+        this.createLight();
 
         this.showHelpText()
+    }
+
+    createLight() {
+        this.light = this.make.sprite({
+            x: this.gladiator.x - this.cameras.main.scrollX * this.gladiator.scrollFactorX + this.cameras.main.x;,
+            y: this.gladiator.x - this.cameras.main.scrollX * this.gladiator.scrollFactorX + this.cameras.main.x;,
+            key: 'light',
+            add: false,
+        });
+
+        const mask: Phaser.Display.Masks.BitmapMask = this.light.createBitmapMask();
+        this.cameras.main.setMask(mask);
+
+    }
+
+    checkLight() {
+        const cam = this.cameras.main;
+        const gameObjectCanvasX = this.gladiator.x - cam.scrollX * this.gladiator.scrollFactorX + cam.x;
+        const gameObjectCanvasY = this.gladiator.y - cam.scrollY * this.gladiator.scrollFactorY + cam.y;
+        console.log(gameObjectCanvasX)
+        this.light.x = gameObjectCanvasX;
+        this.light.y = gameObjectCanvasY;
+
     }
 
     showHelpText() {
@@ -138,8 +162,8 @@ export default class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.enemies, this.gladiator, (e: Enemy, g: Gladiator) => {
             const angle = Phaser.Math.Angle.Between(e.x, e.y, g.x, g.y);
             this.physics.velocityFromRotation(angle, -300, this.gladiator.body.velocity);
-            this.cameras.main.shake(100);
-            //this.cameras.main.flash(100);
+            this.cameras.main.shake(10);
+            // this.cameras.main.flash(20);
         });
         this.physics.add.collider(this.enemies, this.mapLayers.solid);
         this.physics.add.collider(this.gladiator.bullets, this.mapLayers.solid, (b: Bullet, w) => {
@@ -162,7 +186,7 @@ export default class MainScene extends Phaser.Scene {
 
 
     configureCamera() {
-        this.cameras.main.setRoundPixels(true);
+        // this.cameras.main.setRoundPixels(true);
         this.cameras.main.startFollow(this.gladiator);
     }
 
@@ -241,6 +265,8 @@ export default class MainScene extends Phaser.Scene {
         // this.checkEnemies();
         this.checkOutside();
         this.gladiator.update();
+        this.checkLight();
+
     }
 
     checkInput() {
